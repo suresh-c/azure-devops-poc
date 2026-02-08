@@ -13,8 +13,8 @@ stages:
   - job: HelmDeploy
     displayName: Helm Upgrade
     pool:
-      vmImage: ubuntu-latest
-
+#      vmImage: ubuntu-latest
+      name: Default
     steps:
     - task: HelmInstaller@1
       displayName: Install Helm
