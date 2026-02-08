@@ -4,6 +4,8 @@ image:
   repository: sureshintrospect1b.azurecr.io/myazureappv1
   tag: "latest"     # overridden by pipeline
   pullPolicy: IfNotPresent
+imagePullSecrets:
+  - name: acr-secret
 
 service:
   type: LoadBalancer
