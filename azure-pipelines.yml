@@ -26,10 +26,10 @@ stages:
 
           $version = (Invoke-RestMethod -Uri "https://dl.k8s.io/release/stable.txt").Trim()
           $url = "https://dl.k8s.io/release/$version/bin/windows/amd64/kubectl.exe"
-          Invoke-WebRequest -Uri $url -OutFile "$kubectlDir\kubectl.exe"
+          Invoke-WebRequest -Uri $url -OutFile "$kubectlDir\kubectl.exe" -UseBasicParsing
 
-          # PREPEND PATH for ALL future steps
-          Write-Host "##vso[task.prependpath]$kubectlDir"
+          # Add to PATH for this step only (no admin)
+          $env:PATH = "$kubectlDir;$env:PATH"
 
           kubectl version --client
     - task: HelmInstaller@1
