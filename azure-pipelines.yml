@@ -1,0 +1,36 @@
+trigger:
+- main
+
+variables:
+  helmReleaseName: myazureappv1
+  kubernetesNamespace: default
+  imageTag: $(Build.BuildId)
+
+stages:
+- stage: Deploy
+  displayName: Deploy to AKS
+  jobs:
+  - job: HelmDeploy
+    displayName: Helm Upgrade
+    pool:
+      vmImage: ubuntu-latest
+
+    steps:
+    - task: HelmInstaller@1
+      displayName: Install Helm
+      inputs:
+        helmVersionToInstall: latest
+
+    - task: HelmDeploy@0
+      displayName: Deploy Helm chart
+      inputs:
+        connectionType: Kubernetes Service Connection
+        kubernetesServiceConnection: demo-aks-service-connection
+        namespace: $(kubernetesNamespace)
+        command: upgrade
+        chartType: FilePath
+        chartPath: myazureappv1
+        releaseName: $(helmReleaseName)
+        overrideValues: |
+          image.tag=$(imageTag)
+        arguments: "--install --atomic"

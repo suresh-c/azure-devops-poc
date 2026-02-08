@@ -1,0 +1,15 @@
+replicaCount: 2
+
+image:
+  repository: sureshintrospect1b.azurecr.io/myazureappv1
+  tag: "latest"     # overridden by pipeline
+  pullPolicy: IfNotPresent
+
+service:
+  type: LoadBalancer
+  port: 80
+
+ingress:
+  enabled: false
+
+resources: {}
