@@ -16,6 +16,14 @@ stages:
 #      vmImage: ubuntu-latest
       name: Default
     steps:
+    - task: PowerShell@2
+      displayName: Install kubectl
+      inputs:
+        targetType: 'inline'
+        script: |
+          if (-not (Get-Command kubectl -ErrorAction SilentlyContinue)) {
+            choco install kubernetes-cli -y
+          }    
     - task: HelmInstaller@1
       displayName: Install Helm
       inputs:
