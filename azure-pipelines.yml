@@ -53,7 +53,6 @@ stages:
         releaseName: $(helmReleaseName)
         overrideValues: |
           image.tag=$(imageTag)
-        values: |
-          values.myapp.yaml
+        valueFile: values.myapp.yaml
         arguments: "--install --atomic"
 
