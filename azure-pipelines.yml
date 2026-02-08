@@ -28,8 +28,8 @@ stages:
           $url = "https://dl.k8s.io/release/$version/bin/windows/amd64/kubectl.exe"
           Invoke-WebRequest -Uri $url -OutFile "$kubectlDir\kubectl.exe"
 
-          # Add to PATH only for this pipeline run
-          $env:PATH = "$kubectlDir;$env:PATH"
+          # PREPEND PATH for ALL future steps
+          Write-Host "##vso[task.prependpath]$kubectlDir"
 
           kubectl version --client
     - task: HelmInstaller@1
