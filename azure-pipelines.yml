@@ -17,13 +17,21 @@ stages:
       name: Default
     steps:
     - task: PowerShell@2
-      displayName: Install kubectl
+      displayName: Install kubectl (No admin)
       inputs:
         targetType: 'inline'
         script: |
-          if (-not (Get-Command kubectl -ErrorAction SilentlyContinue)) {
-            choco install kubernetes-cli -y
-          }    
+          $kubectlDir = "$(Agent.TempDirectory)\kubectl"
+          New-Item -ItemType Directory -Force -Path $kubectlDir | Out-Null
+
+          $version = (Invoke-RestMethod -Uri "https://dl.k8s.io/release/stable.txt").Trim()
+          $url = "https://dl.k8s.io/release/$version/bin/windows/amd64/kubectl.exe"
+          Invoke-WebRequest -Uri $url -OutFile "$kubectlDir\kubectl.exe"
+
+          # Add to PATH only for this pipeline run
+          $env:PATH = "$kubectlDir;$env:PATH"
+
+          kubectl version --client
     - task: HelmInstaller@1
       displayName: Install Helm
       inputs:
