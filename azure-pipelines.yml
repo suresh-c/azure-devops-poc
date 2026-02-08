@@ -47,7 +47,7 @@ stages:
         connectionType: Kubernetes Service Connection
         kubernetesServiceConnection: demo-aks-service-connection
         namespace: $(kubernetesNamespace)
-        command: upgrade
+        command: install
         chartType: FilePath
         chartPath: myazureappv1
         releaseName: $(helmReleaseName)
