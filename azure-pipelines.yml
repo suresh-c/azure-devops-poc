@@ -53,6 +53,6 @@ stages:
         releaseName: $(helmReleaseName)
         overrideValues: |
           image.tag=$(imageTag)
-        valueFile: values.myapp.yaml
+        valueFile: myazureappv1/values.myapp.yaml
         arguments: "--install --atomic"
 
