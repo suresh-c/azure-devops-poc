@@ -28,9 +28,11 @@ stages:
           $url = "https://dl.k8s.io/release/$version/bin/windows/amd64/kubectl.exe"
           Invoke-WebRequest -Uri $url -OutFile "$kubectlDir\kubectl.exe" -UseBasicParsing
 
-          # Add to PATH for this step only (no admin)
-          $env:PATH = "$kubectlDir;$env:PATH"
+          # Set a pipeline variable so we can use it in the next task
+          Write-Host "##vso[task.setvariable variable=KUBECTL_DIR]$kubectlDir"
 
+          # Ensure it's available in this step too
+          $env:PATH = "$kubectlDir;$env:PATH"
           kubectl version --client
     - task: HelmInstaller@1
       displayName: Install Helm
@@ -39,6 +41,8 @@ stages:
 
     - task: HelmDeploy@0
       displayName: Deploy Helm chart
+      env:
+        PATH: "$(KUBECTL_DIR);$(PATH)"
       inputs:
         connectionType: Kubernetes Service Connection
         kubernetesServiceConnection: demo-aks-service-connection
