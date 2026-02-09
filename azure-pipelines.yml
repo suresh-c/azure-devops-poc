@@ -54,5 +54,5 @@ stages:
         overrideValues: |
           image.tag=$(imageTag)
         valueFile: myazureappv1/values.myapp.yaml
-        arguments: "--install --rollback-on-failure"
+        arguments: "--install --atomic"
 
