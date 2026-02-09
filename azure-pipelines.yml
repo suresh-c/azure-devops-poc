@@ -52,7 +52,7 @@ stages:
         chartPath: myazureappv1
         releaseName: $(helmReleaseName)
         overrideValues: |
-          image.tag=$(imageTag)
+          image.tag=1.0
         valueFile: myazureappv1/values.myapp.yaml
         arguments: "--install --atomic"
 
